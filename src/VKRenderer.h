@@ -6,6 +6,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 class VKRenderer {
 public:

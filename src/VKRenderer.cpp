@@ -1,8 +1,5 @@
 #include "VKRenderer.h"
 
-#include <iostream>
-#include <ostream>
-
 VKRenderer::VKRenderer() {}
 
 int VKRenderer::Init(GLFWwindow * newWindow) {
