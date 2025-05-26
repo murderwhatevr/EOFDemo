@@ -12,7 +12,7 @@ Window::Window(int width, int height) {
 
 int Window::Init() {
     if (!glfwInit()) {
-        std::cerr << "Failed to initialize GLFW" << std::endl;
+        std::cerr << "Failed to initialize GLFW" << "\n";
         glfwTerminate();
         return 1;
     }
@@ -22,7 +22,7 @@ int Window::Init() {
     mainWindow = glfwCreateWindow(windowWidth, windowHeight, "Echoes of Faith", nullptr, nullptr);
 
     if (!mainWindow) {
-        std::cerr << "Failed to create GLFW window" << std::endl;
+        std::cerr << "Failed to create GLFW window" << "\n";
         glfwTerminate();
         return 1;
     }

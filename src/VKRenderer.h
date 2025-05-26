@@ -8,6 +8,8 @@
 #include <vector>
 #include <iostream>
 
+#include "Utilities.h"
+
 class VKRenderer {
 public:
     VKRenderer();
@@ -21,9 +23,28 @@ private:
 
     // Vulkan Components
     VkInstance instance;
+    struct {
+        VkPhysicalDevice physicalDevice;
+        VkDevice logicalDevice;
+    }mainDevice;
+    VkQueue graphicsQueue;
 
     // Vulkan Functions
+    // - Create Functions
     void CreateInstance();
+    void CreateLogicalDevice();
+
+    // - Get Functions
+    void GetPhysicalDevice();
+    void GetLogicalDevice();
+
+    // - Support Functions
+    // -- Checker Functions
+    bool CheckInstanceExtensionSupport(std::vector<const char*> * checkExtensions);
+    bool CheckDeviceSuitable(VkPhysicalDevice device);
+
+    // -- Getter Functions
+    QueueFamilyIndices GetQueueFamilyIndices(VkPhysicalDevice device);
 };
 
 #endif //VKRENDERER_H
