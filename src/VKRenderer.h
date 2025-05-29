@@ -21,6 +21,11 @@ public:
 private:
     GLFWwindow * window;
 
+    // Validation layers
+    const std::vector<const char*> validationLayers = {
+        "VK_LAYER_KHRONOS_validation"
+    };
+
     // Vulkan Components
     VkInstance instance;
     struct {
@@ -42,6 +47,7 @@ private:
     // -- Checker Functions
     bool CheckInstanceExtensionSupport(std::vector<const char*> * checkExtensions);
     bool CheckDeviceSuitable(VkPhysicalDevice device);
+    bool CheckValidationLayerSupport();
 
     // -- Getter Functions
     QueueFamilyIndices GetQueueFamilyIndices(VkPhysicalDevice device);

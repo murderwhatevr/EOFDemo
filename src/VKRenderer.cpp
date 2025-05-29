@@ -64,9 +64,25 @@ void VKRenderer::CreateInstance() {
     info.enabledExtensionCount = static_cast<uint32_t>(instanceExtensionsList.size());
     info.ppEnabledExtensionNames = instanceExtensionsList.data();
 
-    // TODO: Set up validation layers that instance will use
-    info.enabledLayerCount = 0;
-    info.ppEnabledLayerNames = nullptr;
+    // Use validation layers
+    #ifdef NDEBUG
+    const bool enableValidationLayers = false;
+    #else
+    const bool enableValidationLayers = true;
+    #endif
+
+    // Validation layers
+    if (enableValidationLayers && !CheckValidationLayerSupport()) {
+        throw std::runtime_error("Validation layers requested, but not available!");
+    }
+
+    if (enableValidationLayers) {
+        info.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
+        info.ppEnabledLayerNames = validationLayers.data();
+    } else {
+        info.enabledLayerCount = 0;
+        info.ppEnabledLayerNames = nullptr;
+    }
 
     // Check if the extensions are supported
     if (!CheckInstanceExtensionSupport(&instanceExtensionsList)) {
@@ -180,6 +196,28 @@ bool VKRenderer::CheckDeviceSuitable(VkPhysicalDevice device) {
 
     return indices.isValid();
 }
+
+bool VKRenderer::CheckValidationLayerSupport() {
+    uint32_t layerCount;
+    vkEnumerateInstanceLayerProperties(&layerCount, nullptr);
+
+    std::vector<VkLayerProperties> availableLayers(layerCount);
+    vkEnumerateInstanceLayerProperties(&layerCount, availableLayers.data());
+
+    for (const char* layerName : validationLayers) {
+        bool layerFound = false;
+        for (const auto &layerProperties : availableLayers) {
+            if (strcmp(layerName, layerProperties.layerName) == 0) {
+                layerFound = true;
+                break;
+            }
+        }
+        if (!layerFound) return false;
+    }
+
+    return true;
+}
+
 
 QueueFamilyIndices VKRenderer::GetQueueFamilyIndices(VkPhysicalDevice device) {
     QueueFamilyIndices indices;
